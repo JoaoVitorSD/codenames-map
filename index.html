@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codenames Map</title>
+    <style>
+        body,main,.map,.table{
+            width: 100vw;
+            background: #ccc;
+        }
+        .table{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .row{
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 5vw;
+        }
+    .card{
+        width: 5vw;
+        margin: 10px;
+        border-radius: 50%;
+    }
+      .card--black {
+        background-color: black;
+      }
+      .card--blue {
+        background-color: blue;
+      }
+      .card--red {
+        background-color: red;
+      }
+      .card--yellow {
+        background-color: yellow;
+      }
+      .row{display: flex;}
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="form"></div>
+      <div class="map">
+        <div class="table">
+
+        </div>
+      </div>
+    </main>
+    <script>
+      // A function that returns a random number between 0 and the dimension
+      const randomPosition = (dimension) => parseInt(Math.random() * dimension);
+
+      // A function that returns the line of the board based on the absolute position of the card. 
+      const getLine = (absolutePosition,axisY) => Math.floor(absolutePosition / axisY);
+
+      // Returning the column of the board based on the absolute position of the card.
+      const getColumn = (absolutePosition,axisY) => absolutePosition % axisY;
+    
+      function getCard(type){
+        var card = document.createElement("div");
+        card.classList.add("card");
+        card.classList.add("card--"+type);
+        return card;
+    }
+
+      function generateLine(line, axisX){
+        var row = document.createElement("div");
+        row.classList.add("row");
+        for(var i = 0;i<axisX;i++){
+            row.appendChild(getCard(line[i]))
+        }
+        return row;
+      }
+
+      class Map {
+        constructor(assasins = 1, axisX = 5, axisY = 5) {
+          this.board = Array(axisY);
+          let dimension = axisX * axisY;
+          let positionsFilled = Array(dimension);
+          let cards = 0;
+          let blues = 9;
+          let red = 8;
+          let yellow = dimension - 1 - blues - red;
+          for (var i = 0; i < axisY; i++) {
+            this.board[i] = Array(axisX);
+          }
+          var position = randomPosition(dimension);
+          this.board[getLine(position,axisY)][getColumn(position,axisY)] = "black";
+          positionsFilled.push(position);
+          while(blues>0){
+              position = randomPosition(dimension);
+              if(positionsFilled.lastIndexOf(position) >= 0){
+                  continue;
+              }
+              this.board[getLine(position,axisY)][getColumn(position,axisY)] = "blue";
+              blues--;
+              positionsFilled.push(position);
+          }
+          while(red>0){
+              position = randomPosition(dimension);
+              if(positionsFilled.lastIndexOf(position) >= 0){
+                  continue;
+              }
+              this.board[getLine(position,axisY)][getColumn(position,axisY)] = "red";
+              red--;
+              positionsFilled.push(position);
+          }
+          while(yellow>0){
+              position = randomPosition(dimension);
+              if(positionsFilled.lastIndexOf(position) >= 0){
+                  continue;
+              }
+              this.board[getLine(position,axisY)][getColumn(position,axisY)] = "yellow";
+              yellow--;
+              positionsFilled.push(position);
+          }
+          console.log(this.board);
+          var table = document.querySelector(".table")
+          for(var i = 0;i<axisY;i++){
+            table.appendChild(generateLine(this.board[i],axisX))
+          }
+        }
+      }
+      let map = new Map(1, 5, 5);
+    </script>
+  </body>
+</html>
