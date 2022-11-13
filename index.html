@@ -123,6 +123,7 @@
           }
           console.log(this.board);
           var table = document.querySelector(".table")
+          table.innerHTML= "";
           for(var i = 0;i<axisY;i++){
             table.appendChild(generateLine(this.board[i],axisX))
           }
