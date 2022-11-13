@@ -43,7 +43,9 @@
   </head>
   <body>
     <main>
-      <div class="form"></div>
+      <div class="form">
+        <button onclick="generateMap()">Gerar</button>
+    </div>
       <div class="map">
         <div class="table">
 
@@ -51,7 +53,8 @@
       </div>
     </main>
     <script>
-      // A function that returns a random number between 0 and the dimension
+      // A function that returns a random number between 0 and the 
+      const generateMap = () =>new Map(1,5,5); 
       const randomPosition = (dimension) => parseInt(Math.random() * dimension);
 
       // A function that returns the line of the board based on the absolute position of the card. 
